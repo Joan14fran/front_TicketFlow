@@ -1,6 +1,8 @@
 .
 ├── angular.json
+├── Dockerfile
 ├── estructura.txt
+├── nginx.conf
 ├── package.json
 ├── package-lock.json
 ├── proxy.conf.json
@@ -33,4 +35,4 @@
 ├── tsconfig.json
 └── tsconfig.spec.json
 
-8 directories, 26 files
+8 directories, 28 files

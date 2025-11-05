@@ -1,0 +1,36 @@
+.
+├── angular.json
+├── estructura.txt
+├── package.json
+├── package-lock.json
+├── proxy.conf.json
+├── public
+│   └── favicon.ico
+├── README.md
+├── src
+│   ├── app
+│   │   ├── app.config.ts
+│   │   ├── app.css
+│   │   ├── app.html
+│   │   ├── app.routes.ts
+│   │   ├── app.spec.ts
+│   │   ├── app.ts
+│   │   ├── components
+│   │   │   └── health-check
+│   │   │       ├── health-check.css
+│   │   │       ├── health-check.html
+│   │   │       ├── health-check.spec.ts
+│   │   │       └── health-check.ts
+│   │   ├── interfaces
+│   │   │   └── health-response.ts
+│   │   └── services
+│   │       ├── api.spec.ts
+│   │       └── api.ts
+│   ├── index.html
+│   ├── main.ts
+│   └── styles.css
+├── tsconfig.app.json
+├── tsconfig.json
+└── tsconfig.spec.json
+
+8 directories, 26 files

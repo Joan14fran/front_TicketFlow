@@ -1,0 +1,22 @@
+<div class="health-container">
+    @if (healthStatus$ | async; as status) {
+
+    @if (isError(status)) {
+    <div class="error-box">
+        <h2>Error de Conexión</h2>
+        <p>{{ status.error }}</p>
+    </div>
+    } @else {
+    <div class="success-box">
+        <h2>¡Backend Conectado!</h2>
+        <p><strong>Estado:</strong> <span>{{ status.status }}</span></p>
+        <p><strong>Mensaje:</strong> <span>{{ status.message }}</span></p>
+    </div>
+    }
+
+    } @else {
+    <p class="loading">Cargando estado del backend...</p>
+
+    }
+
+</div>

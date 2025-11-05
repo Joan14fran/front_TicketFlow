@@ -1,12 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { HealthCheckComponent } from './components/health-check/health-check';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+
+  imports: [RouterOutlet, HealthCheckComponent],
+
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css'     
 })
-export class App {
-  protected readonly title = signal('front_TicketFlow');
+export class AppComponent {
+  title = 'front_TicketFlow';
 }

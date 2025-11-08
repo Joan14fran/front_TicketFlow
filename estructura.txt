@@ -1,14 +1,14 @@
 .
-├── angular.json
 ├── Dockerfile
+├── README.md
+├── angular.json
 ├── estructura.txt
 ├── nginx.conf
-├── package.json
 ├── package-lock.json
+├── package.json
 ├── proxy.conf.json
 ├── public
 │   └── favicon.ico
-├── README.md
 ├── src
 │   ├── app
 │   │   ├── app.config.ts
@@ -18,16 +18,28 @@
 │   │   ├── app.spec.ts
 │   │   ├── app.ts
 │   │   ├── components
-│   │   │   └── health-check
-│   │   │       ├── health-check.css
-│   │   │       ├── health-check.html
-│   │   │       ├── health-check.spec.ts
-│   │   │       └── health-check.ts
+│   │   │   ├── dashboard
+│   │   │   │   ├── dashboard.component.css
+│   │   │   │   ├── dashboard.component.html
+│   │   │   │   └── dashboard.component.ts
+│   │   │   ├── login
+│   │   │   │   ├── login.component.css
+│   │   │   │   ├── login.component.html
+│   │   │   │   └── login.component.ts
+│   │   │   └── register
+│   │   │       ├── register.component.css
+│   │   │       ├── register.component.html
+│   │   │       └── register.component.ts
+│   │   ├── guards
+│   │   │   └── auth.guard.ts
+│   │   ├── interceptors
+│   │   │   └── auth.interceptor.ts
 │   │   ├── interfaces
 │   │   │   └── health-response.ts
 │   │   └── services
 │   │       ├── api.spec.ts
-│   │       └── api.ts
+│   │       ├── api.ts
+│   │       └── auth.service.ts
 │   ├── index.html
 │   ├── main.ts
 │   └── styles.css
@@ -35,4 +47,4 @@
 ├── tsconfig.json
 └── tsconfig.spec.json
 
-8 directories, 28 files
+12 directories, 36 files

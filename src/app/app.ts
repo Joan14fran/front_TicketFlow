@@ -1,17 +1,15 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
-import { HealthCheckComponent } from './components/health-check/health-check';
+import { Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
 
-  imports: [RouterOutlet, HealthCheckComponent],
+  imports: [RouterOutlet],
 
-  templateUrl: './app.html',
-  styleUrl: './app.css'     
+  templateUrl: "./app.html",
+  styleUrl: "./app.css",
 })
 export class AppComponent {
-  title = 'front_TicketFlow';
+  title = "front_TicketFlow";
 }

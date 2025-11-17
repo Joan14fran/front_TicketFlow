@@ -1,0 +1,217 @@
+<app-navbar></app-navbar>
+
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6">Panel de Agente</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-5">Todos los Tickets</h2>
+
+        @if (ticketsLoading) { <p>Cargando...</p> }
+        @if (ticketsError) { <div class="p-3 text-red-800 bg-red-100 rounded-md">{{ ticketsError }}</div> }
+        @if (!ticketsLoading && !ticketsError && allTickets.length === 0) {
+        <div class="text-center p-4 border-dashed border-2 rounded-md">
+            <p class="text-gray-500">No hay tickets activos.</p>
+        </div>
+        }
+
+        @if (!ticketsLoading && allTickets.length > 0) {
+        <ul class="divide-y divide-gray-200">
+            <li class="hidden md:grid md:grid-cols-5 gap-4 py-2 font-semibold text-sm text-gray-500">
+                <span>Título / ID</span>
+                <span>Cliente</span>
+                <span>Categoría</span>
+                <span>Prioridad</span>
+                <span>Estado</span>
+            </li>
+
+            @for (ticket of allTickets; track ticket.id) {
+            <li class="grid grid-cols-2 md:grid-cols-5 gap-4 py-4 items-center">
+                <div class="col-span-2 md:col-span-1">
+                    <button type="button" (click)="openTicketModal(ticket.id)"
+                        class="font-medium text-indigo-600 hover:text-indigo-800 text-left truncate">
+                        {{ ticket.title }}
+                    </button>
+                    <span class="block text-sm text-gray-400">#{{ ticket.id }}</span>
+                </div>
+                <div class="text-sm text-gray-700">
+                    <span class="md:hidden font-medium">Cliente: </span>
+                    {{ ticket.created_by }}
+                </div>
+                <div class="text-sm text-gray-700">
+                    <span class="md:hidden font-medium">Categoría: </span>
+                    {{ ticket.category_name }}
+                </div>
+                <div>
+                    <span [ngClass]="getPriorityClass(ticket.priority)"
+                        class="px-3 py-1 text-xs font-semibold rounded-full border">
+                        {{ ticket.priority | uppercase }}
+                    </span>
+                </div>
+                <div>
+                    <span [ngClass]="getStatusClass(ticket.status)"
+                        class="px-3 py-1 text-xs font-semibold rounded-full border">
+                        {{ ticket.status | uppercase }}
+                    </span>
+                </div>
+            </li>
+            }
+        </ul>
+        }
+    </div>
+</div>
+
+
+@if (isModalVisible) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+
+        <div class="flex justify-between items-center p-4 border-b">
+            @if (selectedTicket) {
+            <h3 class="text-xl font-semibold">Gestionar Ticket: #{{ selectedTicket.id }}</h3>
+            } @else {
+            <h3 class="text-xl font-semibold">Cargando Ticket...</h3>
+            }
+            <button (click)="closeModal()" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+        </div>
+
+        <div class="p-6 overflow-y-auto">
+            @if (modalLoading) { <p>Cargando detalles...</p> }
+            @if (modalError) { <div class="p-3 text-red-800 bg-red-100 rounded-md">{{ modalError }}</div> }
+
+            @if (selectedTicket) {
+            <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ selectedTicket.title }}</h4>
+            <div class="grid grid-cols-2 gap-4 mb-4 text-sm border-b pb-4">
+                <div>
+                    <span class="block text-gray-500">Cliente</span>
+                    <span class="font-medium">{{ selectedTicket.created_by }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500">Categoría</span>
+                    <span class="font-medium">{{ selectedTicket.category_name }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500">Agente Asignado</span>
+                    @if (selectedTicket.assigned_to_username) {
+                    <span class="font-medium">{{ selectedTicket.assigned_to_username }}</span>
+                    } @else {
+                    <span class="font-medium text-gray-400 italic">Nadie asignado</span>
+                    }
+                </div>
+                <div>
+                    <span class="block text-gray-500">Última Actualización</span>
+                    <span class="font-medium">{{ selectedTicket.updated_at | date:'short' }}</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h5 class="text-lg font-semibold mb-2">Descripción</h5>
+                <p class="text-gray-700 whitespace-pre-wrap bg-gray-50 p-3 border rounded-md">{{
+                    selectedTicket.description }}</p>
+            </div>
+
+            <form [formGroup]="updateForm" (ngSubmit)="onUpdateTicket()">
+                <h5 class="text-lg font-semibold mb-3 border-t pt-4">Gestionar Ticket</h5>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Actualizar
+                            Estado</label>
+                        <select id="status" formControlName="status"
+                            class="w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            <option value="open">Abierto</option>
+                            <option value="in_progress">En Progreso</option>
+                            <option value="closed">Cerrado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="priority" class="block text-sm font-medium text-gray-700 mb-1">Actualizar
+                            Prioridad</label>
+                        <select id="priority" formControlName="priority"
+                            class="w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                            <option value="low">Baja</option>
+                            <option value="medium">Media</option>
+                            <option value="high">Alta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Añadir Comentario
+                        (Opcional)</label>
+                    <textarea id="comment" formControlName="comment" rows="3"
+                        class="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                        placeholder="Escribe una actualización o resolución..."></textarea>
+                </div>
+
+                @if (updateSuccess) {
+                <div class="mb-4 p-3 text-sm text-green-800 bg-green-100 rounded-md">
+                    {{ updateSuccess }}
+                </div>
+                }
+                @if (updateError) {
+                <div class="mb-4 p-3 text-sm text-red-800 bg-red-100 rounded-md">
+                    {{ updateError }}
+                </div>
+                }
+
+                <button type="submit" [disabled]="updateForm.invalid || updateLoading"
+                    class="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 disabled:opacity-60">
+                    @if (updateLoading) { <span>Actualizando...</span> } @else { <span>Actualizar Ticket y
+                        Comentar</span> }
+                </button>
+            </form>
+
+            <div class="mt-6">
+                <h5 class="text-lg font-semibold mb-3 border-b pb-1">Historial ({{ selectedTicket.comments.length }})
+                </h5>
+                @if (selectedTicket.comments.length === 0) {
+                <p class="text-gray-500 text-sm">Aún no hay comentarios.</p>
+                } @else {
+                <ul class="space-y-4 max-h-48 overflow-y-auto">
+                    @for (comment of selectedTicket.comments; track comment.id) {
+                    <li class="flex gap-3">
+                        <div
+                            class="flex-shrink-0 w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600">
+                            {{ comment.user.charAt(0) | uppercase }}
+                        </div>
+                        <div class="flex-1 bg-gray-50 p-3 rounded-lg border">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold text-sm">
+                                    {{ comment.user }}
+                                    @if (comment.user_role === 'agent') {
+                                    <span class="text-xs text-indigo-600">(Agente)</span>
+                                    }
+                                </span>
+                                <span class="text-xs text-gray-500">{{ comment.created_at | date:'short' }}</span>
+                            </div>
+                            <p class="text-sm text-gray-800">{{ comment.content }}</p>
+                        </div>
+                    </li>
+                    }
+                </ul>
+                }
+            </div>
+            }
+        </div> @if (selectedTicket) {
+        <div class="flex justify-between items-center p-4 border-t bg-gray-50 rounded-b-lg">
+            <button type="button" (click)="assignToMe()"
+                [disabled]="selectedTicket.assigned_to === currentAgentId || updateLoading"
+                class="py-2 px-4 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 disabled:opacity-60">
+                @if(selectedTicket.assigned_to === currentAgentId) {
+                <span>✔ Ya estás asignado</span>
+                } @else {
+                <span>Asignarme a mí</span>
+                }
+            </button>
+
+            <button type="button" (click)="closeModal()"
+                class="py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-md hover:bg-gray-300">
+                Cerrar
+            </button>
+        </div>
+        }
+
+    </div>
+</div>
+}

@@ -1,27 +1,32 @@
 import { Routes } from '@angular/router';
+
+// Componentes de autenticación
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+// Dashboards por rol
+import { ClientDashboard } from './components/client-dashboard/client-dashboard';
+import { AgentDashboard } from './components/agent-dashboard/agent-dashboard';
+// Guardianes
+import { roleGuard } from './guards/role-guard';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  { 
+    path: 'dashboard-client', 
+    component: ClientDashboard,
+    canActivate: [authGuard, roleGuard], 
+    data: { expectedRole: 'client' } 
   },
-  {
-    path: 'register',
-    loadComponent: () => import('./components/register/register.component').then(m => m.RegisterComponent)
+  { 
+    path: 'dashboard-agent', 
+    component: AgentDashboard,
+    canActivate: [authGuard, roleGuard],
+    data: { expectedRole: 'agent' }
   },
-  {
-    path: 'dashboard',
-    loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent),
-    canActivate: [authGuard]
-  },
-  {
-    path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: '**',
-    redirectTo: '/login'
-  }
+  
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' } 
 ];

@@ -15,47 +15,56 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-  
+
   loginForm: FormGroup;
   loading = false;
   error = '';
-  
+
   constructor() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
-  
+
   onSubmit(): void {
     if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
       return;
     }
-    
+
     this.loading = true;
     this.error = '';
-    
+
     const { username, password } = this.loginForm.value;
-    
+
     this.authService.login(username, password).subscribe({
       next: (response) => {
         console.log('Login exitoso:', response);
         this.loading = false;
-        this.router.navigate(['/dashboard']);
+
+        if (response.user && response.user.role === 'agent') {
+          this.router.navigate(['/dashboard-agent']);
+        } else if (response.user && response.user.role === 'client') {
+          this.router.navigate(['/dashboard-client']);
+        } else {
+          console.error('Rol no definido en la respuesta');
+          this.router.navigate(['/login']);
+        }
       },
       error: (err) => {
         console.error('Error en login:', err);
         this.loading = false;
-        this.error = err.error?.non_field_errors?.[0] || 
-                    'Usuario o contraseña incorrectos';
+        this.error = err.error?.non_field_errors?.[0] ||
+          'Usuario o contraseña incorrectos';
       }
     });
   }
-  
+
   get username() {
     return this.loginForm.get('username');
   }
-  
+
   get password() {
     return this.loginForm.get('password');
   }

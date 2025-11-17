@@ -18,6 +18,16 @@
 │   │   ├── app.spec.ts
 │   │   ├── app.ts
 │   │   ├── components
+│   │   │   ├── agent-dashboard
+│   │   │   │   ├── agent-dashboard.css
+│   │   │   │   ├── agent-dashboard.html
+│   │   │   │   ├── agent-dashboard.spec.ts
+│   │   │   │   └── agent-dashboard.ts
+│   │   │   ├── client-dashboard
+│   │   │   │   ├── client-dashboard.css
+│   │   │   │   ├── client-dashboard.html
+│   │   │   │   ├── client-dashboard.spec.ts
+│   │   │   │   └── client-dashboard.ts
 │   │   │   ├── dashboard
 │   │   │   │   ├── dashboard.component.css
 │   │   │   │   ├── dashboard.component.html
@@ -36,11 +46,15 @@
 │   │   │       ├── register.component.html
 │   │   │       └── register.component.ts
 │   │   ├── guards
-│   │   │   └── auth.guard.ts
+│   │   │   ├── auth.guard.ts
+│   │   │   ├── role-guard.spec.ts
+│   │   │   └── role-guard.ts
 │   │   ├── interceptors
 │   │   │   └── auth.interceptor.ts
 │   │   ├── interfaces
-│   │   │   └── health-response.ts
+│   │   │   ├── category.ts
+│   │   │   ├── health-response.ts
+│   │   │   └── ticket.ts
 │   │   └── services
 │   │       ├── api.spec.ts
 │   │       ├── api.ts
@@ -53,4 +67,4 @@
 ├── tsconfig.json
 └── tsconfig.spec.json
 
-13 directories, 41 files
+15 directories, 53 files

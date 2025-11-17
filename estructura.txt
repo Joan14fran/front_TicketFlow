@@ -1,14 +1,14 @@
 .
-├── Dockerfile
-├── README.md
 ├── angular.json
+├── Dockerfile
 ├── estructura.txt
 ├── nginx.conf
-├── package-lock.json
 ├── package.json
+├── package-lock.json
 ├── proxy.conf.json
 ├── public
 │   └── favicon.ico
+├── README.md
 ├── src
 │   ├── app
 │   │   ├── app.config.ts
@@ -26,6 +26,11 @@
 │   │   │   │   ├── login.component.css
 │   │   │   │   ├── login.component.html
 │   │   │   │   └── login.component.ts
+│   │   │   ├── navbar
+│   │   │   │   ├── navbar.css
+│   │   │   │   ├── navbar.html
+│   │   │   │   ├── navbar.spec.ts
+│   │   │   │   └── navbar.ts
 │   │   │   └── register
 │   │   │       ├── register.component.css
 │   │   │       ├── register.component.html
@@ -43,8 +48,9 @@
 │   ├── index.html
 │   ├── main.ts
 │   └── styles.css
+├── tailwind.config.js
 ├── tsconfig.app.json
 ├── tsconfig.json
 └── tsconfig.spec.json
 
-12 directories, 36 files
+13 directories, 41 files
